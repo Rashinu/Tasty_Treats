@@ -52,6 +52,17 @@ const renderFilteredFavorites = () => {
   renderRecipes(filtered, 'recipe-gallery');
 };
 
+// Global Escape Key Listener
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-backdrop.open, .mobile-menu-backdrop.open').forEach(modal => {
+      modal.classList.remove('open');
+    });
+    if (document.body.style.overflow === 'hidden') {
+      document.body.style.overflow = '';
+    }
+  }
+});
 const favCategoriesList = document.getElementById('fav-categories-list');
 if (favCategoriesList) {
   favCategoriesList.addEventListener('click', (e) => {
@@ -82,15 +93,19 @@ document.getElementById('recipe-gallery').addEventListener('click', async (e) =>
   if (detailBtn) {
     const recipeId = detailBtn.dataset.id;
     try {
-      showLoader();
+      const loader = document.getElementById('global-loader');
+      if(loader) loader.classList.remove('hidden');
       const recipeDetails = await fetchRecipeById(recipeId);
+      
+      // Render inside modal
       renderRecipeModal(recipeDetails, 'recipe-modal-content');
       document.getElementById('recipe-modal-backdrop').classList.add('open');
-      body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Failed to load recipe details' });
     } finally {
-      hideLoader();
+      const loader = document.getElementById('global-loader');
+      if(loader) loader.classList.add('hidden');
     }
   }
 });
@@ -126,34 +141,3 @@ if (modalBackdrop) {
 }
 
 initFavorites();
-
-// Global ESC key listener for modals
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    const openModals = document.querySelectorAll('.modal-backdrop.open');
-    openModals.forEach(modal => {
-      modal.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  }
-});
-
-// Loading Spinner Functions
-function showLoader() {
-  let spinner = document.getElementById('global-spinner');
-  if (!spinner) {
-    spinner = document.createElement('div');
-    spinner.id = 'global-spinner';
-    spinner.className = 'global-spinner-overlay';
-    spinner.innerHTML = '<div class="css-spinner"></div>';
-    document.body.appendChild(spinner);
-  }
-  spinner.classList.add('active');
-}
-
-function hideLoader() {
-  const spinner = document.getElementById('global-spinner');
-  if (spinner) {
-    spinner.classList.remove('active');
-  }
-}

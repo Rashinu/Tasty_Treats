@@ -44,8 +44,9 @@ let state = {
 
 // ... existing code ...
 async function loadRecipes() {
+  const loader = document.getElementById('global-loader');
+  if(loader) loader.classList.remove('hidden');
   try {
-    showLoader();
     const params = {
       limit: state.limit,
       page: state.page,
@@ -70,7 +71,7 @@ async function loadRecipes() {
     iziToast.error({ title: 'Error', message: 'Failed to fetch recipes.' });
     console.error(error);
   } finally {
-    hideLoader();
+    if(loader) loader.classList.add('hidden');
   }
 }
 
@@ -106,9 +107,10 @@ document.getElementById('recipe-gallery').addEventListener('click', async (e) =>
   if (detailBtn) {
     const recipeId = detailBtn.dataset.id;
     try {
-      showLoader();
-      const recipeDetails = await import('./api.js').then(m => m.fetchRecipeById(recipeId));
-      import('./render.js').then(m => {
+      const loader = document.getElementById('global-loader');
+      if(loader) loader.classList.remove('hidden');
+      const recipeDetails = await import('./js/api.js').then(m => m.fetchRecipeById(recipeId));
+      import('./js/render.js').then(m => {
         m.renderRecipeModal(recipeDetails, 'recipe-modal-content');
         document.getElementById('recipe-modal-backdrop').classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -116,7 +118,8 @@ document.getElementById('recipe-gallery').addEventListener('click', async (e) =>
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Failed to load recipe details' });
     } finally {
-      hideLoader();
+      const loader = document.getElementById('global-loader');
+      if(loader) loader.classList.add('hidden');
     }
   }
 });
@@ -328,17 +331,16 @@ if (orderForm) {
     const comment = document.getElementById('order-comment').value;
 
     try {
-      showLoader();
-      await import('./api.js').then(m => m.submitOrder({ name, phone, email, comment }));
+      iziToast.info({ title: 'Sending...', id: 'order-send' });
+      await import('./js/api.js').then(m => m.submitOrder({ name, phone, email, comment }));
+      iziToast.destroy({ id: 'order-send' });
       iziToast.success({ title: 'Success', message: 'Order submitted successfully!' });
       orderModal.classList.remove('open');
-      document.body.style.overflow = '';
+      body.style.overflow = '';
       orderForm.reset();
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Failed to submit order' });
       console.error(err);
-    } finally {
-      hideLoader();
     }
   });
 }
@@ -388,8 +390,9 @@ if (ratingForm) {
     }
 
     try {
-      showLoader();
-      await import('./api.js').then(m => m.submitRating(recipeId, { email, rate: currentRating }));
+      iziToast.info({ title: 'Sending...', id: 'rating-send' });
+      await import('./js/api.js').then(m => m.submitRating(recipeId, { email, rate: currentRating }));
+      iziToast.destroy({ id: 'rating-send' });
       iziToast.success({ title: 'Success', message: 'Rating submitted!' });
       ratingModal.classList.remove('open');
       ratingForm.reset();
@@ -397,8 +400,6 @@ if (ratingForm) {
       Array.from(starsInput.children).forEach(s => s.classList.remove('active'));
     } catch (err) {
       iziToast.error({ title: 'Notice', message: err.response?.data?.message || 'Failed to submit rating' });
-    } finally {
-      hideLoader();
     }
   });
 }
@@ -418,47 +419,14 @@ if (modalBackdrop) {
   });
 }
 
-// Global ESC key listener for modals
+// Global Escape Key Listener
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    const openModals = document.querySelectorAll('.modal-backdrop.open');
-    openModals.forEach(modal => {
+    document.querySelectorAll('.modal-backdrop.open, .mobile-menu-backdrop.open').forEach(modal => {
       modal.classList.remove('open');
-      document.body.style.overflow = '';
-      
-      if (modal.id === 'order-modal-backdrop') {
-        const orderForm = document.getElementById('order-form');
-        if (orderForm) orderForm.reset();
-      }
-      if (modal.id === 'rating-modal-backdrop') {
-        const ratingForm = document.getElementById('rating-form');
-        if (ratingForm) ratingForm.reset();
-        currentRating = 0;
-        const starsInput = document.getElementById('rating-stars-input');
-        if (starsInput) {
-          Array.from(starsInput.children).forEach(s => s.classList.remove('active'));
-        }
-      }
     });
+    if (document.body.style.overflow === 'hidden') {
+      document.body.style.overflow = '';
+    }
   }
 });
-
-// Loading Spinner Functions
-export function showLoader() {
-  let spinner = document.getElementById('global-spinner');
-  if (!spinner) {
-    spinner = document.createElement('div');
-    spinner.id = 'global-spinner';
-    spinner.className = 'global-spinner-overlay';
-    spinner.innerHTML = '<div class="css-spinner"></div>';
-    document.body.appendChild(spinner);
-  }
-  spinner.classList.add('active');
-}
-
-export function hideLoader() {
-  const spinner = document.getElementById('global-spinner');
-  if (spinner) {
-    spinner.classList.remove('active');
-  }
-}

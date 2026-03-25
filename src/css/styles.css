@@ -51,9 +51,23 @@ body.dark {
 }
 
 .container {
-  max-width: 1280px;
+  min-width: 320px;
+  max-width: 375px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 0 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
 }
 
 /* Header */
@@ -1089,29 +1103,25 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
 .mobile-nav .nav-link.active { font-weight: 600; color: var(--primary-color); }
 
 /* =========================================
-   GLOBAL SPINNER
+   GLOBAL LOADER SPINNER
    ========================================= */
-.global-spinner-overlay {
+.loader-backdrop {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center;
   z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.loader-backdrop.hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  backdrop-filter: blur(2px);
 }
-.global-spinner-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.css-spinner {
+.loader-spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255,255,255,0.3);
+  border: 4px solid rgba(255, 255, 255, 0.3);
   border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -1124,65 +1134,21 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
    RESPONSIVE DESIGN (Media Queries)
    ========================================= */
 
-/* Tablet (max-width: 1279px) */
 @media (max-width: 1279px) {
-  .hero {
-    flex-direction: column;
-    height: auto;
-    align-items: center;
+  .recipes-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  .hero-text-block {
-    padding-right: 0;
-    margin-bottom: 40px;
-    text-align: center;
-    align-items: center;
-  }
-  .hero-title {
-    font-size: 2.8rem;
-  }
-  .hero-slider-container {
-    width: 100%;
-  }
-  .hero-swiper {
-    height: 400px;
-  }
-  
-  .content-wrapper {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  .categories-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    border-right: none;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  .category-item {
-    margin-bottom: 0;
-    padding: 8px 16px;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-  body.dark .category-item {
-    border-color: rgba(255,255,255,0.1);
-  }
-  .popular-recipes-section {
-    display: none; 
-  }
-  
   .filters-bar {
-    display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero-section {
+    flex-direction: column;
+  }
+  .hero-text-content, .hero-slider-container {
+    width: 100%;
   }
 }
 
-/* Mobile (max-width: 767px) */
 @media (max-width: 767px) {
   /* Header */
   .nav {
@@ -1193,46 +1159,71 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
   }
   
   /* Hero Section */
-  .hero {
-    margin-bottom: 20px;
+  .hero-section {
+    min-height: auto;
+    margin-bottom: 40px;
   }
-  .hero-title {
-    font-size: 2.2rem;
+  .hero-text-content {
+    text-align: center;
+    margin-bottom: 30px;
   }
   .hero-swiper {
-    height: 350px;
+    height: 380px;
   }
-  .chef-card {
-    width: 40%;
+  .chef-slide {
+    width: 50% !important;
   }
-  .preview-card {
-    width: 60%;
-    padding: 15px;
+  .dish-slide {
+    width: 80% !important;
   }
-  .full-image-card {
-    display: none; /* Hide 3rd card on mobile to save space */
+  .dish-card {
+    padding: 20px;
+  }
+  
+  /* Main Content Layout */
+  .main-content {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  .categories-list {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .category-item {
+    margin-bottom: 0;
+    font-size: 14px;
+    padding: 5px 10px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 20px;
+  }
+  body.dark .category-item {
+    border-color: rgba(255,255,255,0.1);
+  }
+  .popular-recipes-section {
+    display: none; /* Hide sideways cards on mobile purely for space */
   }
 
   /* Filters */
   .filters-bar {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: 15px;
   }
-  .search-box {
+  .filter-group {
     width: 100%;
   }
-  .filter-selects {
-    flex-wrap: wrap;
-    gap: 10px;
+  .filter-input, .filter-select {
+    width: 100%;
   }
-  .select-group {
-    flex: 1;
-    min-width: 48%; /* 2 columns for selects on mobile */
-  }
-  
+
   /* Recipes Grid */
-  .recipe-gallery {
+  .recipes-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
@@ -1241,6 +1232,7 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
   .modal-content {
     width: 95%;
     padding: 20px;
+    max-height: 90vh;
   }
   .modal-meta-row {
     flex-direction: column;
@@ -1259,19 +1251,15 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
   }
 }
 
-/* Small Mobile (max-width: 375px) */
-@media (max-width: 375px) {
+@media (max-width: 374px) {
   .hero-title {
-    font-size: 28px;
+    font-size: 32px;
   }
-  .hero-swiper {
-    height: 300px;
+  .chef-slide {
+    width: 70% !important;
   }
-  .chef-card {
-    display: none; /* Only show preview dish on very small screens */
-  }
-  .preview-card {
-    width: 100%;
+  .dish-slide {
+    width: 90% !important;
   }
 }
 
