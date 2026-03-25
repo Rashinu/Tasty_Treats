@@ -82,13 +82,15 @@ document.getElementById('recipe-gallery').addEventListener('click', async (e) =>
   if (detailBtn) {
     const recipeId = detailBtn.dataset.id;
     try {
-      iziToast.info({ title: 'Loading...', position: 'center', timeout: 1000 });
+      showLoader();
       const recipeDetails = await fetchRecipeById(recipeId);
       renderRecipeModal(recipeDetails, 'recipe-modal-content');
       document.getElementById('recipe-modal-backdrop').classList.add('open');
       body.style.overflow = 'hidden';
     } catch (err) {
       iziToast.error({ title: 'Error', message: 'Failed to load recipe details' });
+    } finally {
+      hideLoader();
     }
   }
 });
@@ -124,3 +126,34 @@ if (modalBackdrop) {
 }
 
 initFavorites();
+
+// Global ESC key listener for modals
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const openModals = document.querySelectorAll('.modal-backdrop.open');
+    openModals.forEach(modal => {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+});
+
+// Loading Spinner Functions
+function showLoader() {
+  let spinner = document.getElementById('global-spinner');
+  if (!spinner) {
+    spinner = document.createElement('div');
+    spinner.id = 'global-spinner';
+    spinner.className = 'global-spinner-overlay';
+    spinner.innerHTML = '<div class="css-spinner"></div>';
+    document.body.appendChild(spinner);
+  }
+  spinner.classList.add('active');
+}
+
+function hideLoader() {
+  const spinner = document.getElementById('global-spinner');
+  if (spinner) {
+    spinner.classList.remove('active');
+  }
+}

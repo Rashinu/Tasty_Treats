@@ -2,8 +2,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '/Tasty_Treats/',
-  root: './',
+  root: './src',
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
   },
 });
