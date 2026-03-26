@@ -18,7 +18,7 @@ export const renderEvents = (events, containerId) => {
         
         <!-- Dish Preview Card (with green glow) -->
         <div class="slide-card preview-card">
-          <img class="dish-png" src="${event.topic.previewWebpUrl || event.topic.previewUrl}" alt="${event.topic.name}" loading="lazy" />
+          <img class="dish-png" src="${event.topic.previewWebpUrl || event.topic.previewUrl}" alt="${event.topic.name}" fetchpriority="high" />
           <div class="dish-card-text">
             <h4>${event.topic.name.toUpperCase()}</h4>
             <p>${event.topic.area}</p>

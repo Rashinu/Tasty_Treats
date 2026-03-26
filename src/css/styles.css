@@ -1175,11 +1175,14 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
   .hero-swiper {
     height: 380px;
   }
-  .chef-slide {
-    width: 50% !important;
+  .chef-card {
+    width: 35% !important;
   }
-  .dish-slide {
-    width: 80% !important;
+  .preview-card {
+    width: 65% !important;
+  }
+  .full-image-card {
+    display: none !important;
   }
   .dish-card {
     padding: 20px;
@@ -1258,13 +1261,16 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
 
 @media (max-width: 374px) {
   .hero-title {
-    font-size: 32px;
+    font-size: 28px;
   }
-  .chef-slide {
-    width: 70% !important;
+  .chef-card {
+    width: 40% !important;
   }
-  .dish-slide {
-    width: 90% !important;
+  .preview-card {
+    width: 60% !important;
+  }
+  .dish-png {
+    width: 85%;
   }
 }
 
