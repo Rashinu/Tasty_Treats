@@ -1165,24 +1165,28 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
     margin-bottom: 40px;
   }
   .hero-text-block {
-    text-align: center;
+    text-align: left;
     margin-bottom: 30px;
     padding-right: 0;
   }
   .hero-title {
     font-size: 32px;
   }
+  .hero-slide-row {
+    width: 120%;
+  }
   .hero-swiper {
     height: 380px;
   }
   .chef-card {
-    width: 35% !important;
+    width: 30% !important;
   }
   .preview-card {
-    width: 65% !important;
+    width: 50% !important;
   }
   .full-image-card {
-    display: none !important;
+    width: 35% !important;
+    display: block !important;
   }
   .dish-card {
     padding: 20px;
@@ -1197,24 +1201,18 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
     margin-bottom: 30px;
   }
   .categories-list {
-    max-height: 200px;
-    overflow-y: auto;
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 250px;
+    overflow-y: auto;
   }
   .category-item {
-    margin-bottom: 0;
-    font-size: 14px;
-    padding: 5px 10px;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 20px;
-  }
-  body.dark .category-item {
-    border-color: rgba(255,255,255,0.1);
+    font-size: 16px;
   }
   .popular-recipes-section {
-    display: none; /* Hide sideways cards on mobile purely for space */
+    display: block; /* Show sideways cards on mobile */
+    margin-top: 40px;
   }
 
   /* Filters */
@@ -1223,7 +1221,16 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
     flex-direction: column;
     gap: 15px;
   }
-  .filter-group {
+  .filter-selects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  .filter-selects .select-group:nth-child(1),
+  .filter-selects .select-group:nth-child(2) {
+    width: calc(50% - 8px);
+  }
+  .filter-selects .select-group:nth-child(3) {
     width: 100%;
   }
   .filter-input, .filter-select {
@@ -1264,10 +1271,10 @@ body.dark .mobile-menu-content { background: var(--bg-main-dark); color: white; 
     font-size: 28px;
   }
   .chef-card {
-    width: 40% !important;
+    width: 32% !important;
   }
   .preview-card {
-    width: 60% !important;
+    width: 55% !important;
   }
   .dish-png {
     width: 85%;
