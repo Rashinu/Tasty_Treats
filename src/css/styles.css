@@ -228,29 +228,51 @@ input:checked + .slider:before {
 /* Hero Section */
 .hero {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   gap: 20px;
   padding: 40px 0;
-  margin-bottom: 60px;
-  height: 480px; /* Fixed height for consistent flex layout */
+  margin-bottom: 40px;
+  height: auto;
   box-sizing: border-box;
 }
 
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row;
+    align-items: stretch;
+    margin-bottom: 60px;
+    height: 480px; /* Fixed height for consistent flex layout */
+  }
+}
+
 .hero-text-block {
-  flex: 1;
+  flex: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding-right: 40px;
+  padding-right: 0;
+}
+
+@media (min-width: 768px) {
+  .hero-text-block {
+    flex: 1;
+    padding-right: 40px;
+  }
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   line-height: 1.1;
   font-weight: 500;
   margin-top: 0;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
 }
 
 .highlight {
@@ -289,11 +311,18 @@ body.dark .btn-outline-primary {
 }
 
 .hero-slider-container {
-  flex: 1.2;
-  min-width: 0;
+  flex: none;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (min-width: 768px) {
+  .hero-slider-container {
+    flex: 1.2;
+    min-width: 0;
+  }
 }
 
 .hero-swiper {
@@ -392,13 +421,26 @@ body.dark .btn-outline-primary {
 
 .content-wrapper {
   display: flex;
+  flex-direction: column;
   gap: 40px;
+}
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    flex-direction: row;
+  }
 }
 
 /* Sidebar */
 .sidebar {
-  width: 250px;
-  flex-shrink: 0;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 250px;
+    flex-shrink: 0;
+  }
 }
 
 .all-categories-btn {
@@ -581,11 +623,36 @@ body.dark .search-box input, body.dark .select-group select {
 .filter-selects {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.select-group {
+  flex: 1;
+  min-width: calc(50% - 10px);
+}
+
+.select-group:nth-child(3) {
+  min-width: 100%;
 }
 
 .select-group select {
-  min-width: 120px;
+  width: 100%;
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .filter-selects {
+    width: auto;
+    flex-wrap: nowrap;
+  }
+  .select-group, .select-group:nth-child(3) {
+    min-width: auto;
+    flex: none;
+  }
+  .select-group select {
+    min-width: 120px;
+  }
 }
 
 .filter-reset-wrapper {

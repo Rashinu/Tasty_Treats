@@ -18,7 +18,7 @@ export const renderEvents = (events, containerId) => {
         
         <!-- Dish Preview Card (with green glow) -->
         <div class="slide-card preview-card">
-          <img class="dish-png" src="${event.topic.previewWebpUrl || event.topic.previewUrl}" alt="${event.topic.name}" fetchpriority="high" />
+          <img class="dish-png" src="${event.topic.previewWebpUrl || event.topic.previewUrl}" alt="${event.topic.name}" fetchpriority="high" width="200" height="200" />
           <div class="dish-card-text">
             <h4>${event.topic.name.toUpperCase()}</h4>
             <p>${event.topic.area}</p>
@@ -208,12 +208,12 @@ export const renderRecipeModal = (recipe, containerId) => {
 
   const videoMarkup = videoId 
     ? `<div class="video-container" style="position: relative;">
-         <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${recipe.title}" class="modal-img" style="margin-bottom: 0;" loading="lazy">
+         <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${recipe.title}" class="modal-img" style="margin-bottom: 0;" loading="lazy" width="293" height="200">
          <div class="play-overlay">
            <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
          </div>
        </div>`
-    : `<img src="${recipe.preview}" alt="${recipe.title}" class="modal-img" loading="lazy">`;
+    : `<img src="${recipe.preview}" alt="${recipe.title}" class="modal-img" loading="lazy" width="293" height="200">`;
 
   // Check if favored
   const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
